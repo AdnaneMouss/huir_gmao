@@ -1,0 +1,3 @@
+[submodule "client_angular"]
+	path = client_angular
+	url = https://github.com/AdnaneMouss/huir_gmao
