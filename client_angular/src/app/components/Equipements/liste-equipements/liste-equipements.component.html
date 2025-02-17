@@ -1,0 +1,86 @@
+<div class="container py-6">
+  <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">Gestion des Équipements</h2>
+
+  <!-- Panneau d'ajout de l'équipement -->
+  <div class="text-center mb-6">
+    <button class="py-3 px-6 bg-green-500 text-white rounded-xl shadow-md hover:bg-green-600 transition duration-300 ease-in-out" (click)="togglePanel()">Ajouter un Équipement</button>
+  </div>
+
+  <!-- Panneau d'ajout -->
+  <div *ngIf="showPanel" class="fixed inset-0 flex justify-center items-center z-50 bg-black bg-opacity-50">
+    <div class="bg-white p-6 rounded-xl shadow-2xl w-full max-w-md">
+      <div class="flex justify-between items-center mb-4">
+        <h4 class="text-xl font-semibold text-gray-800">Ajouter un Équipement</h4>
+        <button class="text-lg font-bold text-red-500" (click)="togglePanel()">X</button>
+      </div>
+      <form (ngSubmit)="addEquipement()">
+        <div class="mb-4">
+          <label for="nom" class="block text-gray-700 font-medium mb-1">Nom</label>
+          <input type="text" class="w-full py-2 px-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="nom" [(ngModel)]="newEquipement.nom" name="nom" required>
+        </div>
+        <div class="mb-4">
+          <label for="description" class="block text-gray-700 font-medium mb-1">Description</label>
+          <input type="text" class="w-full py-2 px-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="description" [(ngModel)]="newEquipement.description" name="description" required>
+        </div>
+        <div class="mb-4">
+          <label for="numeroSerie" class="block text-gray-700 font-medium mb-1">Numéro de série</label>
+          <input type="text" class="w-full py-2 px-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="numeroSerie" [(ngModel)]="newEquipement.numeroSerie" name="numeroSerie" required>
+        </div>
+        <div class="mb-4">
+          <label for="service" class="block text-gray-700 font-medium mb-1">Service</label>
+          <select class="w-full py-2 px-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="service" [(ngModel)]="newEquipement.service" name="service" required>
+            <option value="1">Service 1</option>
+            <option value="2">Service 2</option>
+          </select>
+        </div>
+        <div class="mb-4">
+          <label for="statut" class="block text-gray-700 font-medium mb-1">Statut</label>
+          <select class="w-full py-2 px-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" id="statut" [(ngModel)]="newEquipement.statut" name="statut" required>
+            <option value="EN_SERVICE">En Service</option>
+            <option value="EN_REPARATION">En Réparation</option>
+            <option value="HORS_SERVICE">Hors Service</option>
+          </select>
+        </div>
+        <div class="flex justify-between">
+          <button type="submit" class="py-2 px-4 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600">Ajouter</button>
+          <button type="button" class="py-2 px-4 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600" (click)="togglePanel()">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Liste des équipements sous forme de table -->
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white shadow-md rounded-lg">
+      <thead>
+      <tr class="bg-gray-200 text-gray-700">
+        <th class="py-2 px-4 text-left">Image</th>
+        <th class="py-2 px-4 text-left">Nom</th>
+        <th class="py-2 px-4 text-left">Description</th>
+        <th class="py-2 px-4 text-left">Numéro de Série</th>
+        <th class="py-2 px-4 text-left">Service</th>
+        <th class="py-2 px-4 text-left">Statut</th>
+        <th class="py-2 px-4 text-left">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let equipement of equipements">
+        <td class="py-2 px-4 text-center">
+          <img src="{{equipement.image}}" alt="Image de l'équipement" class="w-20 h-20 object-cover rounded-md">
+        </td>
+        <td class="py-2 px-4">{{ equipement.nom }}</td>
+        <td class="py-2 px-4">{{ equipement.description }}</td>
+        <td class="py-2 px-4">{{ equipement.numeroSerie }}</td>
+        <td class="py-2 px-4">{{ equipement.service }}</td>
+        <td class="py-2 px-4">{{ equipement.statut }}</td>
+        <td class="py-2 px-4 flex justify-start">
+          <button class="text-white bg-red-500 rounded-lg px-4 py-2 shadow-md hover:bg-red-600 transition duration-300 ease-in-out" (click)="deleteEquipement(equipement.id)">
+            <i class="fas fa-trash-alt"></i> Supprimer
+          </button>
+          <a [routerLink]="['/details', equipement.id]" class="text-white bg-blue-500 rounded-lg px-4 py-2 shadow-md hover:bg-blue-600 transition duration-300 ease-in-out ml-2">🔍 Détails</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
