@@ -5,6 +5,7 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/GmaoApp/GmaoApp/pom.xml" />
+        <option value="$PROJECT_DIR$/server_spring/GmaoApp/pom.xml" />
       </list>
     </option>
   </component>
