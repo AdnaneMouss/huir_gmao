@@ -7,6 +7,9 @@ import {NavigationEnd, Router} from "@angular/router";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  title(title: any) {
+    throw new Error('Method not implemented.');
+  }
   shouldShowNavbar = true;  // Default to true (show navbar)
 
   constructor(private router: Router) {}

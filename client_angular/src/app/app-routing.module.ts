@@ -7,7 +7,6 @@ import {
   DetailsUtilisateursComponent
 } from "./components/Utilisateurs/details-utilisateurs/details-utilisateurs.component";
 import {ListeUtilisateursComponent} from "./components/Utilisateurs/liste-utilisateurs/liste-utilisateurs.component";
-import {ListeEquipementsComponent} from "./components/Equipements/liste-equipements/liste-equipements.component";
 import {
   CategoriesEquipementsComponent
 } from "./components/Equipements/categories-equipements/categories-equipements.component";
@@ -28,7 +27,6 @@ import {
   HistoriqueMaintenancesComponent
 } from "./components/Maintenances/historique-maintenances/historique-maintenances.component";
 import {TachesAffecteesComponent} from "./components/Interventions/taches-affectees/taches-affectees.component";
-import {InterventionService} from "./services/intervention.service";
 import {
   InterventionsPrecedentesComponent
 } from "./components/Interventions/interventions-precedentes/interventions-precedentes.component";
@@ -41,6 +39,11 @@ import {
   GestionAccesUtilisateursComponent
 } from "./components/Utilisateurs/gestion-acces-utilisateurs/gestion-acces-utilisateurs.component";
 import {DashboardComponent} from "./components/dashboard/dashboard.component";
+import {ListeEquipementsComponent} from "./components/Equipements/liste-equipements/liste-equipements.component";
+import {DetailsEquipementsComponent} from "./components/Equipements/details-equipements/details-equipements.component";
+import {
+  EquipementsParCategorieComponent
+} from "./components/Equipements/equipements-par-categorie/equipements-par-categorie.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -50,7 +53,9 @@ const routes: Routes = [
   { path: 'utilisateurs/permissions', component: GestionAccesUtilisateursComponent, canActivate: [AuthGuard], data: { roles: ['ADMIN'] } },
   { path: 'details/:id', component: DetailsUtilisateursComponent, canActivate: [AuthGuard], data: { roles: ['ADMIN'] } },
   { path: 'equipements/liste', component: ListeEquipementsComponent, canActivate: [AuthGuard], data: { roles: ['ADMIN', 'RESPONSABLE'] } },
+  { path: 'details-equipements/:id', component: DetailsEquipementsComponent, canActivate: [AuthGuard], data: { roles: ['ADMIN'] } },
   { path: 'equipements/categories', component: CategoriesEquipementsComponent, canActivate: [AuthGuard], data: { roles: ['ADMIN'] } },
+  { path: 'equipements/:serviceId', component: EquipementsParCategorieComponent, canActivate: [AuthGuard], data: { roles: ['ADMIN'] } },
   { path: 'stock/liste', component: ListePiecesDetacheesComponent, canActivate: [AuthGuard], data: { roles: ['ADMIN','RESPONSABLE','MAGASINIER'] } },
   { path: 'stock/alertes', component: SuiviStocksAlertesComponent, canActivate: [AuthGuard], data: { roles: ['RESPONSABLE'] } },
   { path: 'stock/demande', component: DemandePieceDetacheeComponent, canActivate: [AuthGuard], data: { roles: ['RESPONSABLE','TECHNICIEN'] } },

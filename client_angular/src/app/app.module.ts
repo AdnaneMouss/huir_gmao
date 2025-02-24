@@ -14,9 +14,9 @@ import { DetailsUtilisateursComponent } from './components/Utilisateurs/details-
 import {MatFormField} from "@angular/material/form-field";
 import {MatOption} from "@angular/material/autocomplete";
 import {MatSelect} from "@angular/material/select";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
-import {RouterOutlet} from "@angular/router";
+import {RouterLink, RouterOutlet} from "@angular/router";
 import {AppRoutingModule} from "./app-routing.module";
 import {LoginComponent} from "./components/login/login.component";
 import {NgOptimizedImage} from "@angular/common";
@@ -28,7 +28,6 @@ import { DemandePieceDetacheeComponent } from './components/Stocks/demande-piece
 import { MaintenancesPreventivesComponent } from './components/Maintenances/maintenances-preventives/maintenances-preventives.component';
 import { MaintenancesCorrectivesComponent } from './components/Maintenances/maintenances-correctives/maintenances-correctives.component';
 import { HistoriqueMaintenancesComponent } from './components/Maintenances/historique-maintenances/historique-maintenances.component';
-import { ListeEquipementsComponent } from './components/Equipements/liste-equipements/liste-equipements.component';
 import { CategoriesEquipementsComponent } from './components/Equipements/categories-equipements/categories-equipements.component';
 import { StatistiquesInterventionsComponent } from './components/Rapports/statistiques-interventions/statistiques-interventions.component';
 import { CoutMaintenancesComponent } from './components/Rapports/cout-maintenances/cout-maintenances.component';
@@ -37,30 +36,37 @@ import { PanneauNavigationComponent } from './components/Navigation/panneau-navi
 import { TachesAffecteesComponent } from './components/Interventions/taches-affectees/taches-affectees.component';
 import { InterventionsPrecedentesComponent } from './components/Interventions/interventions-precedentes/interventions-precedentes.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import {ListeEquipementsComponent} from "./components/Equipements/liste-equipements/liste-equipements.component";
+import { DetailsEquipementsComponent } from './components/Equipements/details-equipements/details-equipements.component';
+import { DetailsEquipementsPiecesComponent } from './components/Equipements/details-equipements-pieces/details-equipements-pieces.component';
+import { EquipementsParCategorieComponent } from './components/Equipements/equipements-par-categorie/equipements-par-categorie.component';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        DetailsUtilisateursComponent,
-        GestionAccesUtilisateursComponent,
-        ListeUtilisateursComponent,
-        ListePiecesDetacheesComponent,
-        SuiviStocksAlertesComponent,
-        DemandePieceDetacheeComponent,
-        MaintenancesPreventivesComponent,
-        MaintenancesCorrectivesComponent,
-        HistoriqueMaintenancesComponent,
-        ListeEquipementsComponent,
-        CategoriesEquipementsComponent,
-        StatistiquesInterventionsComponent,
-        CoutMaintenancesComponent,
-        ParametresGenerauxComponent,
-        TachesAffecteesComponent,
-        InterventionsPrecedentesComponent,
-        DashboardComponent,
-    ],
+  declarations: [
+    AppComponent,
+    DetailsUtilisateursComponent,
+    GestionAccesUtilisateursComponent,
+    ListeUtilisateursComponent,
+    ListePiecesDetacheesComponent,
+    SuiviStocksAlertesComponent,
+    DemandePieceDetacheeComponent,
+    MaintenancesPreventivesComponent,
+    MaintenancesCorrectivesComponent,
+    HistoriqueMaintenancesComponent,
+    CategoriesEquipementsComponent,
+    StatistiquesInterventionsComponent,
+    CoutMaintenancesComponent,
+    ParametresGenerauxComponent,
+    TachesAffecteesComponent,
+    InterventionsPrecedentesComponent,
+    DashboardComponent,
+    DetailsEquipementsComponent,
+    DetailsEquipementsPiecesComponent,
+    EquipementsParCategorieComponent,
+  ],
   imports: [
     AppRoutingModule,
+    ListeEquipementsComponent,
     LoginComponent,
     BrowserModule,
     HttpClientModule,
@@ -79,6 +85,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     RouterOutlet,
     PanneauNavigationComponent,
     NgOptimizedImage,
+    RouterLink,
+    ReactiveFormsModule,
   ],
   providers: [
     provideAnimationsAsync()

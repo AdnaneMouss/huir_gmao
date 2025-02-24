@@ -48,7 +48,7 @@ export class DetailsUtilisateursComponent implements OnInit {
         next: (updatedUser) => {
           this.user = updatedUser;
           this.isEditMode = false;  // Disable edit mode after saving
-          this.router.navigate(['/users']);  // Redirect after saving
+          this.router.navigate(['/utilisateurs/liste']);  // Redirect after saving
         },
         error: (err) => {
           console.error('Error updating user:', err);
