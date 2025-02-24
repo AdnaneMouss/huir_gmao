@@ -1,10 +1,12 @@
 package com.huir.GmaoApp.controller;
 
 import com.huir.GmaoApp.dto.EquipementDTO;
+import com.huir.GmaoApp.dto.UserDTO;
+import com.huir.GmaoApp.model.Attribut;
 import com.huir.GmaoApp.model.Equipement;
+import com.huir.GmaoApp.repository.EquipementRepository;
 import com.huir.GmaoApp.service.EquipementService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +21,10 @@ public class EquipementController {
 
     @Autowired
     private EquipementService equipementService;
-
+    @Autowired
+    private  EquipementRepository equipementRepository;
     // Get all equipment
+
     @GetMapping
     public List<EquipementDTO> getAllEquipements() {
         return equipementService.findAllEquipements().stream()
@@ -28,19 +32,65 @@ public class EquipementController {
                 .collect(Collectors.toList());
     }
 
-    // Get equipment by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Equipement> getEquipementById(@PathVariable Long id) {
-        Optional<Equipement> equipement = equipementService.findEquipementById(id);
-        return equipement.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    @GetMapping("/service/{serviceId}")
+    public List<Equipement> getEquipementsByService(@PathVariable Long serviceId) {
+        return equipementRepository.findByServiceId(serviceId);
     }
 
-    // Create or update equipment
     @PostMapping
-    public ResponseEntity<Equipement> createEquipement(@RequestBody Equipement equipement) {
+    public ResponseEntity<EquipementDTO> createEquipement(@RequestBody EquipementDTO equipementDTO) {
+        Equipement equipement = new Equipement();
+
+        equipement.setNom(equipementDTO.getNom());
+        equipement.setDescription(equipementDTO.getDescription());
+        equipement.setImage(equipementDTO.getImage());
+        equipement.setNumeroSerie(equipementDTO.getNumeroSerie());
+        equipement.setModele(equipementDTO.getModele());
+        equipement.setMarque(equipementDTO.getMarque());
+        equipement.setLocalisation(equipementDTO.getLocalisation());
+        equipement.setStatut(equipementDTO.getStatut());
+        equipement.setDateAchat(equipementDTO.getDateAchat());
+        equipement.setDateMiseEnService(equipementDTO.getDateMiseEnService());
+        equipement.setGarantie(equipementDTO.getGarantie());
+        equipement.setDateDerniereMaintenance(equipementDTO.getDateDerniereMaintenance());
+        equipement.setFrequenceMaintenance(equipementDTO.getFrequenceMaintenance());
+        equipement.setHistoriquePannes(equipementDTO.getHistoriquePannes());
+        equipement.setCoutAchat(equipementDTO.getCoutAchat());
+
+        // Handling dynamic attributes
+        List<Attribut> attributs = equipementDTO.getAttributs().stream()
+                .map(attrDTO -> {
+                    Attribut attribut = new Attribut();
+                    attribut.setNom(attrDTO.getNom());
+                    attribut.setValeur(attrDTO.getValeur());
+                    attribut.setEquipement(equipement);
+                    return attribut;
+                })
+                .collect(Collectors.toList());
+
+        equipement.setAttributs(attributs);
+
+        // Save the Equipement entity
         Equipement savedEquipement = equipementService.saveEquipement(equipement);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedEquipement);
+
+        // Return the DTO of the saved equipement
+        EquipementDTO responseDTO = new EquipementDTO(savedEquipement);
+        return ResponseEntity.ok(responseDTO);
     }
+
+    @GetMapping("/{id}")
+    public Optional<EquipementDTO> getEquipementById(@PathVariable("id") Long equipementId) {
+        // Fetch the Equipement data by ID
+        Optional<Equipement> equipement = equipementService.findEquipementById(equipementId);
+
+        return equipement.map(EquipementDTO::new);
+    }
+
+    @PutMapping("/{id}")
+    public EquipementDTO updateUser(@PathVariable Long id, @RequestBody EquipementDTO equipementDTO) {
+        return equipementService.updateEquipement(id, equipementDTO);
+    }
+
 
     // Delete equipment
     @DeleteMapping("/{id}")
@@ -49,3 +99,6 @@ public class EquipementController {
         return ResponseEntity.noContent().build();
     }
 }
+
+
+

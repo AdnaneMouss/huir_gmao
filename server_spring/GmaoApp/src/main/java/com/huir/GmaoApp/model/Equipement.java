@@ -5,9 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import jakarta.persistence.*;
-import java.util.List;
-
-@Entity
+import java.util.List;@Entity
 @Table(name = "equipements")
 @Getter
 @Setter
@@ -46,17 +44,22 @@ public class Equipement {
     private User responsableMaintenance;
 
     // Relationship with OrdreTravail
-    @OneToMany(mappedBy = "equipement", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "equipement", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<OrdreTravail> ordresTravail;
 
     // Relationship with PieceDetachee (Many-to-Many)
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "equipement_piece_detachee", // Join table name
-            joinColumns = @JoinColumn(name = "equipement_id"),  // Foreign key for Equipement
-            inverseJoinColumns = @JoinColumn(name = "piece_detachee_id")  // Foreign key for PieceDetachee
+            name = "equipement_piece_detachee",
+            joinColumns = @JoinColumn(name = "equipement_id"),
+            inverseJoinColumns = @JoinColumn(name = "piece_detachee_id")
     )
     @JsonManagedReference
     private List<PieceDetachee> piecesDetachees;
+
+    // Relationship with Attribut (One-to-Many)
+    @OneToMany(mappedBy = "equipement", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<Attribut> attributs;
 }

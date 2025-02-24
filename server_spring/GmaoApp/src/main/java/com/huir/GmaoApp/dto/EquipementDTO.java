@@ -12,26 +12,29 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Builder
 public class EquipementDTO {
-    private String image;
     private Long id;
+    private String image;
     private String nom;
     private String description;
     private String numeroSerie;
     private String modele;
     private String marque;
     private String localisation;
-    private String serviceNom;  // The service name instead of the full object
+    private String serviceNom;
     private String statut;
     private String dateAchat;
     private String dateMiseEnService;
     private String garantie;
     private String dateDerniereMaintenance;
     private String frequenceMaintenance;
-    private String responsableMaintenanceNom;  // The responsible maintenance name instead of the full object
-    private List<String> ordresTravail;  // List of strings or specific references
-    private List<String> piecesDetachees;  // List of strings or references for piecesDetachees
+    private String responsableMaintenanceNom;
+    private List<String> ordresTravail;
+    private List<String> piecesDetachees;
     private String historiquePannes;
     private String coutAchat;
+
+    // Add the list of dynamic attributes
+    private List<AttributDTO> attributs;
 
     // Constructor to map Equipement to EquipementDTO
     public EquipementDTO(Equipement equipement) {
@@ -50,19 +53,22 @@ public class EquipementDTO {
         this.frequenceMaintenance = equipement.getFrequenceMaintenance();
         this.historiquePannes = equipement.getHistoriquePannes();
         this.coutAchat = equipement.getCoutAchat();
-        this.image=equipement.getImage();
-        // Avoid circular reference
+        this.image = equipement.getImage();
         this.serviceNom = equipement.getService() != null ? equipement.getService().getNom() : null;
         this.responsableMaintenanceNom = equipement.getResponsableMaintenance() != null ? equipement.getResponsableMaintenance().getNom() : null;
 
-        // Convert list of ordresTravail to their names or references
+        // Map the list of ordresTravail and piecesDetachees
         this.ordresTravail = equipement.getOrdresTravail() != null ? equipement.getOrdresTravail().stream()
-                .map(ordre -> ordre.getDescription())  // assuming OrdreTravail has a "nom" field
+                .map(ordre -> ordre.getDescription())  // assuming OrdreTravail has a "description" field
                 .collect(Collectors.toList()) : null;
 
-        // Convert list of PieceDetachee to their names or references
         this.piecesDetachees = equipement.getPiecesDetachees() != null ? equipement.getPiecesDetachees().stream()
                 .map(piece -> piece.getNom())  // assuming PieceDetachee has a "nom" field
+                .collect(Collectors.toList()) : null;
+
+        // Map dynamic attributes to DTOs
+        this.attributs = equipement.getAttributs() != null ? equipement.getAttributs().stream()
+                .map(attr -> new AttributDTO(attr.getNom(), attr.getValeur()))
                 .collect(Collectors.toList()) : null;
     }
 }

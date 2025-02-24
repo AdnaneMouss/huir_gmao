@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ServicesRepository extends JpaRepository<Services, Long> {
     Services findByNom(String nom);
+    boolean existsByNom(String nom);
 }

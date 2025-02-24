@@ -1,6 +1,10 @@
 package com.huir.GmaoApp.controller;
 
+import com.huir.GmaoApp.dto.EquipementDTO;
+import com.huir.GmaoApp.dto.ServiceDTO;
+import com.huir.GmaoApp.model.Equipement;
 import com.huir.GmaoApp.model.Services;
+import com.huir.GmaoApp.repository.ServicesRepository;
 import com.huir.GmaoApp.service.ServicesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,18 +13,24 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/services")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ServicesController {
 
     @Autowired
     private ServicesService serviceService;
+    @Autowired
+    private ServicesRepository servicesRepository;
 
     // Get all services
     @GetMapping
-    public List<Services> getAllServices() {
-        return serviceService.findAllServices();
+    public List<ServiceDTO> getAllEquipements() {
+        return serviceService.findAllServices().stream()
+                .map(ServiceDTO::new)
+                .collect(Collectors.toList());
     }
 
     // Get service by ID
@@ -30,11 +40,25 @@ public class ServicesController {
         return service.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Create or update service
     @PostMapping
-    public ResponseEntity<Services> createService(@RequestBody Services service) {
+    public ResponseEntity<?> createService(@RequestBody ServiceDTO serviceDTO) {
+        if (serviceService.existsByNom(serviceDTO.getNom())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Ce nom est déjà utilisé.");
+        }
+
+        Services service = new Services();
+        service.setNom(serviceDTO.getNom());
+        service.setImage(serviceDTO.getImage());
+        service.setDescription(serviceDTO.getDescription());
+
         Services savedService = serviceService.saveService(service);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedService);
+        return ResponseEntity.ok(new ServiceDTO(savedService));
+    }
+
+
+    @PutMapping("/{id}")
+    public ServiceDTO updateUser(@PathVariable Long id, @RequestBody ServiceDTO serviceDTO) {
+        return serviceService.updateservice(id, serviceDTO);
     }
 
     // Delete service

@@ -44,7 +44,7 @@ public class PieceDetachee {
 
     private String historiqueUtilisation;  // Historique des utilisations de la pièce
 
-    @ManyToMany(mappedBy = "piecesDetachees")
+    @ManyToMany(mappedBy = "piecesDetachees", fetch = FetchType.EAGER)
     private List<Equipement> equipements;
 
     @ManyToMany

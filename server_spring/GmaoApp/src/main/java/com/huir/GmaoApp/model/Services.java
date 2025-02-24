@@ -19,6 +19,12 @@ public class Services {
     @Column(unique = true, nullable = false)
     private String nom;
 
-    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL)
+    @Column
+    private String image;
+
+    @Column
+    private String description;
+
+    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Equipement> equipements;
 }
